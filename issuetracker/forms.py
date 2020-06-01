@@ -1,8 +1,11 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, BooleanField
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField
 from wtforms.validators import DataRequired, Length, Email, EqualTo , ValidationError
 from issuetracker import db
 from issuetracker.models import User
+from wtforms.ext.sqlalchemy.fields import QuerySelectField
+
+
 
 class RegistrationForm(FlaskForm):
     username = StringField('Username',
@@ -38,14 +41,19 @@ class LoginForm(FlaskForm):
 
 
 class PostIssueForm(FlaskForm):
+
+
     Title = StringField('Title',
                             validators = [ DataRequired(), Length(min=2, max=100)])
-    Description = StringField('Description',
-                            validators = [ DataRequired() ])
-    AssignedTo = StringField('AssignedTo', 
+    Description = TextAreaField('Description',
                             validators = [ DataRequired() ])
     Createdby = StringField('Createdby',
                             validators = [ DataRequired() ])
+    AssignedTo = QuerySelectField('AssignedTo',
+        query_factory=lambda: User.query, # you can add order_by(I am not sure)
+        allow_blank=False)
+        #StringField('AssignedTo', default=Createdby)#, validators = [ DataRequired() ])
+    
     Status = BooleanField('Open Status' , default= True)
     submit = SubmitField('Post')
 

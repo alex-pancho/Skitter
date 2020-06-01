@@ -15,7 +15,8 @@ class User(db.Model):
     posts = db.relationship('Post',  lazy=True)
 
     def __repr__(self):
-        return "User('{}', '{}','{}','{}','{}')".format(self.username,self.email,self.AccessToken,self.password,self.notification)
+        return "User('{}', '{}','{}','{}','{}')".format(self.username ,self.email,self.AccessToken,self.password,self.notification)
+
 
 '''Title, Description, AssignedTo (User relation), 
 Createdby (User relation), Status (Open, Closed) '''
